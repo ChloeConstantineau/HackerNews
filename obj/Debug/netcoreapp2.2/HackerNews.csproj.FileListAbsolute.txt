@@ -9,3 +9,14 @@
 /home/chloe/Desktop/HackerNews/obj/Debug/netcoreapp2.2/HackerNews.AssemblyInfo.cs
 /home/chloe/Desktop/HackerNews/obj/Debug/netcoreapp2.2/HackerNews.dll
 /home/chloe/Desktop/HackerNews/obj/Debug/netcoreapp2.2/HackerNews.pdb
+/home/dev/HackerNews/bin/Debug/netcoreapp2.2/HackerNews.deps.json
+/home/dev/HackerNews/bin/Debug/netcoreapp2.2/HackerNews.runtimeconfig.json
+/home/dev/HackerNews/bin/Debug/netcoreapp2.2/HackerNews.runtimeconfig.dev.json
+/home/dev/HackerNews/bin/Debug/netcoreapp2.2/HackerNews.dll
+/home/dev/HackerNews/bin/Debug/netcoreapp2.2/HackerNews.pdb
+/home/dev/HackerNews/obj/Debug/netcoreapp2.2/HackerNews.csprojAssemblyReference.cache
+/home/dev/HackerNews/obj/Debug/netcoreapp2.2/HackerNews.csproj.CoreCompileInputs.cache
+/home/dev/HackerNews/obj/Debug/netcoreapp2.2/HackerNews.AssemblyInfoInputs.cache
+/home/dev/HackerNews/obj/Debug/netcoreapp2.2/HackerNews.AssemblyInfo.cs
+/home/dev/HackerNews/obj/Debug/netcoreapp2.2/HackerNews.dll
+/home/dev/HackerNews/obj/Debug/netcoreapp2.2/HackerNews.pdb
