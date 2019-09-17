@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 using System.Threading.Tasks;
 using Models;
 using System.Collections.Concurrent;
-using System.Threading;
+using System.Diagnostics;
 
 public static class Constants
 {
@@ -18,78 +18,125 @@ namespace HackerNews
 {
     class Program
     {
+
         static void Main(string[] args)
         {
-            var getTopStories = new TransformBlock<string, ConcurrentQueue<string>>(async uri =>
+            var filterStoriesBufferBlock = new BufferBlock<Item>();
+            var traverseTopStoriesBufferBlock = new BufferBlock<TopStory>();
+            ConcurrentDictionary<string, int> commentsRegistry = new ConcurrentDictionary<string, int>();
+
+            async Task<Item> ProcessItemAsync(string id)
+            {
+                System.Console.WriteLine("Processing id: " + id);
+                string url = "https://hacker-news.firebaseio.com/v0/item/" + id.ToString() + ".json";
+                string payload = await new HttpClient().GetStringAsync(url);
+                Item item = JsonConvert.DeserializeObject<Item>(payload);
+                return item;
+            }
+
+
+            var getTopStories = new TransformBlock<string, Queue<string>>(async uri =>
              {
                  Console.WriteLine("Downloading '{0}'...", uri);
                  string payload = await new HttpClient().GetStringAsync(uri);
                  IEnumerable<string> topIds = JsonConvert.DeserializeObject<IEnumerable<string>>(payload);
                  System.Console.WriteLine("Finished loading the top stories");
-                 return new ConcurrentQueue<string>(topIds);
+                 return new Queue<string>(topIds);
              });
 
-            var filterStories = new TransformBlock<ConcurrentQueue<string>, Item[]>(async queueId =>
+
+            var filterStories = new ActionBlock<Queue<string>>(async queueId =>
             {
-                var processCount = Environment.ProcessorCount; //Number of threads equals number of core
                 int topStoryCounter = 0;
-                ConcurrentBag<Item> topStories = new ConcurrentBag<Item>();
+
+                while (topStoryCounter < Constants.NBSTORIES && queueId.TryDequeue(out string id))
+                {
+                    Item currentItem = await ProcessItemAsync(id);
+                    if (topStoryCounter < Constants.NBSTORIES && currentItem.Type == "story" && !currentItem.Dead && !currentItem.Deleted)
+                    {
+                        topStoryCounter++;
+                        filterStoriesBufferBlock.Post(currentItem); //Posting result to the next block as it is computed
+                    }
+                }
+
+                Console.WriteLine("Finished Filtering Stories");
+            });
+
+            var traverseTopStories = new ActionBlock<Item>(async item =>
+           {
+               Stopwatch stopwatch = Stopwatch.StartNew();
+
+               if (item.Kids != null)
+               {
+                   var storyComment = await traverseCommentTree(item.Kids);
+                   var topStory = new TopStory(item.Title, storyComment);
+                   traverseTopStoriesBufferBlock.Post(topStory);
+               }
+           });
+
+            async Task<ConcurrentDictionary<string, int>> traverseCommentTree(List<int> kids)
+            {
+                ConcurrentQueue<int> kidsToVisit = new ConcurrentQueue<int>(kids);
+                ConcurrentDictionary<string, int> storyComments = new ConcurrentDictionary<string, int>();
 
                 var tasks = new List<Task>();
+                var processCount = Environment.ProcessorCount; //Number of threads equals number of core
+
                 for (int n = 0; n < processCount; n++)
                 {
                     tasks.Add(Task.Run(async () =>
                     {
-                        while (queueId.TryDequeue(out string id) && topStoryCounter < Constants.NBSTORIES)
+                        while (kidsToVisit.Count != 0)
                         {
-                            string url = "https://hacker-news.firebaseio.com/v0/item/" + id.ToString() + ".json";
-                            string payload = await new HttpClient().GetStringAsync(url);
-                            Item item = JsonConvert.DeserializeObject<Item>(payload);
-                            if (item.Type == "story" && topStoryCounter < Constants.NBSTORIES)
+                            kidsToVisit.TryDequeue(out int currentKidId);
+                            Item item = await ProcessItemAsync(currentKidId.ToString());
+                            if (item != null && !item.Dead && !item.Deleted && item.By != null)
                             {
-                                Interlocked.Increment(ref topStoryCounter);
-                                topStories.Add(item);
+                                storyComments.AddOrUpdate(item.By, 1, (key, oldValue) => oldValue + 1);
+                                commentsRegistry.AddOrUpdate(item.By, 1, (key, oldValue) => oldValue + 1);
+                                if (item != null && item.Kids != null && !item.Dead && !item.Deleted)
+                                {
+                                    foreach (var kidId in item.Kids)
+                                    {
+                                        kidsToVisit.Enqueue(kidId);
+                                    }
+                                }
                             }
                         }
                     }));
                 }
                 await Task.WhenAll(tasks);
-                return topStories.ToArray();
+
+
+                return storyComments;
+            }
+
+            var computeTopCommentators = new ActionBlock<TopStory>(topStory =>
+            {
+                List<string> topCommentators = new List<string>();
+                var comments = topStory.Comments.ToArray();
+
+                for (int i = 0; i < comments.Length; i++)
+                {
+
+                }
             });
 
-            var sortTopStories = new TransformBlock<Item[], Item[]>(topStories =>
+            var print = new ActionBlock<TopStory>(topStory =>
             {
-                Array.Sort(topStories, (Item a, Item b) =>
-                {
-                    if (a.Kids == null)
-                        a.Kids = new List<int>();
-
-                    if (b.Kids == null)
-                        b.Kids = new List<int>();
-
-                    if (a.Kids.Count > b.Kids.Count)
-                        return 1;
-
-                    if (a.Kids.Count < b.Kids.Count)
-                        return -1;
-
-                    else
-                        return 0;
-                });
-
-                return topStories;
+                System.Console.WriteLine(topStory.Title + " Comment count: " + topStory.Comments.Count);
             });
 
             try
             {
                 var linkOptions = new DataflowLinkOptions { PropagateCompletion = true };
                 getTopStories.LinkTo(filterStories, linkOptions);
-                filterStories.LinkTo(sortTopStories, linkOptions);
+                filterStoriesBufferBlock.LinkTo(traverseTopStories, linkOptions);
+                traverseTopStoriesBufferBlock.LinkTo(print, linkOptions);
 
                 getTopStories.Post("https://hacker-news.firebaseio.com/v0/topstories.json");
                 getTopStories.Complete();
-                sortTopStories.Completion.Wait();
-
+                print.Completion.Wait();
             }
             catch (AggregateException ex)
             {
