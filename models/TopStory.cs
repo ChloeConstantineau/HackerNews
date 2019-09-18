@@ -13,7 +13,6 @@ namespace Models
 
         public string Title { get; set; }
         public ConcurrentDictionary<string, int> Comments { get; set; }
-
-        public List<string> TopCommentators { get; set; }
+        public List<KeyValuePair<string, int>> TopComments { get; set; }
     }
 }
