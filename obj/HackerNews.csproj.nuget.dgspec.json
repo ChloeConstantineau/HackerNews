@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "/home/chloe/Desktop/HackerNews/HackerNews.csproj": {}
+    "/home/dev/HackerNews/HackerNews.csproj": {}
   },
   "projects": {
-    "/home/chloe/Desktop/HackerNews/HackerNews.csproj": {
+    "/home/dev/HackerNews/HackerNews.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/chloe/Desktop/HackerNews/HackerNews.csproj",
+        "projectUniqueName": "/home/dev/HackerNews/HackerNews.csproj",
         "projectName": "HackerNews",
-        "projectPath": "/home/chloe/Desktop/HackerNews/HackerNews.csproj",
-        "packagesPath": "/home/chloe/.nuget/packages/",
-        "outputPath": "/home/chloe/Desktop/HackerNews/obj/",
+        "projectPath": "/home/dev/HackerNews/HackerNews.csproj",
+        "packagesPath": "/home/dev/.nuget/packages/",
+        "outputPath": "/home/dev/HackerNews/obj/",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "/usr/share/dotnet/sdk/NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "/home/chloe/.nuget/NuGet/NuGet.Config"
+          "/home/dev/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp2.2"
