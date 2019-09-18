@@ -10,7 +10,7 @@ using System.Linq;
 
 public static class Constants
 {
-    public const int NBSTORIES = 10;
+    public const int NBSTORIES = 30;
     public const int NBOFCOMMENTATORS = 10;
 }
 
@@ -71,6 +71,11 @@ namespace HackerNews
 
                    traverseTopStoriesBufferBlock.Post(topStory);
                }
+               else
+               {
+                   var topStory = new TopStory(item.Title, new ConcurrentDictionary<string, int>());
+                   traverseTopStoriesBufferBlock.Post(topStory);
+               }
            });
 
             async Task<ConcurrentDictionary<string, int>> traverseCommentTree(List<int> kids)
@@ -116,6 +121,7 @@ namespace HackerNews
             {
                 var topComments = (topStory.Comments.Count >= Constants.NBOFCOMMENTATORS) ? getTopCommentators(topStory.Comments) : new List<KeyValuePair<string, int>>(topStory.Comments.ToArray());
                 topStory.TopComments = topComments;
+                System.Console.WriteLine("Posting story: " + topStory.Title);
                 getTopCommentsBufferBlock.Post(topStory);
             });
 
@@ -157,7 +163,7 @@ namespace HackerNews
                 List<TopStory> finalResults = new List<TopStory>();
                 var receiveAllStories = Task.Run(() =>
                    {
-                       for (int i = 0; i < Constants.NBSTORIES; i++)
+                       for (int i = 0; i <= Constants.NBSTORIES; i++)
                        {
                            finalResults.Add(getTopCommentsBufferBlock.Receive());
                        }
