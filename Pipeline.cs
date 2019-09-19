@@ -7,6 +7,14 @@ using Models;
 
 namespace HackerNews
 {
+    //* INPUT: string HackerNews uri , DataflowLinkOptions*//
+    //* OUTPUT: Story Title, top commentors (comment count, total comment count) for X number of Top Stories *//
+
+    //* This is the heart of the program *//
+    //* A pipeline created of DataFlow block each connected to one another. *//
+    //* The pipeline starts as soon as the GetTopStoriesBlock is triggered *//
+    //* Depending on the block, it can either wait for all the data to arrive, compute and send a result, *//
+    //  or it can send a result for each input receive immediately after it's computation is done. *//
     class Pipeline
     {
         public Pipeline(string uri, DataflowLinkOptions linkOptions)
@@ -19,28 +27,34 @@ namespace HackerNews
 
         public void Run(string uri)
         {
+            // Declaration of all the pipeline blocks
             GetTopStoriesBlock getTopStories = new GetTopStoriesBlock();
             FilterTopStoriesBlock filterTopStories = new FilterTopStoriesBlock();
             TraverseTopStoriesCommentsBlock traverseTopStoriesComments = new TraverseTopStoriesCommentsBlock();
             ComputeTopCommentsPerStoryBlock computeTopCommentsPerStory = new ComputeTopCommentsPerStoryBlock();
 
+            // Links and interactions betwen each block
             getTopStories.block.LinkTo(filterTopStories.block, this.linkOptions);
             filterTopStories.bufferBlock.LinkTo(traverseTopStoriesComments.block, linkOptions);
             traverseTopStoriesComments.bufferBlock.LinkTo(computeTopCommentsPerStory.block, linkOptions);
+
+            // Triggering the start of the pipeline
             getTopStories.block.Post(uri);
             getTopStories.block.Complete();
 
+            // Buffer at the end of the pipeline
             var receiveAllStories = Task.Run(() =>
                {
                    for (int i = 0; i <= Constants.NBSTORIES; i++)
                    {
-                       this.topStories.Add(computeTopCommentsPerStory.bufferBlock.Receive());
+                       this.topStories.Add(computeTopCommentsPerStory.bufferBlock.Receive()); // Wait for all the Top Story objects to arrive
                    }
                });
 
             Task.WaitAll(receiveAllStories);
-            computeTopCommentsPerStory.bufferBlock.Complete();
-            this.commentsRegistry = traverseTopStoriesComments.commentsRegistry;
+            computeTopCommentsPerStory.bufferBlock.Complete(); //End of the pipeline
+
+            commentsRegistry = traverseTopStoriesComments.commentsRegistry;
             printResults(this.topStories);
         }
 
@@ -52,11 +66,11 @@ namespace HackerNews
 
                 foreach (var topComment in result.TopComments)
                 {
-                    System.Console.Write(" | " + topComment.Key + " (" + topComment.Value + " for story - " + commentsRegistry[topComment.Key] + " total)");
+                    System.Console.Write(" | {0} ( {1} for story - {2} total)", topComment.Key, topComment.Value, commentsRegistry[topComment.Key]);
                 }
+
                 System.Console.WriteLine();
             }
-
         }
 
         string uri { get; set; }

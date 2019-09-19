@@ -7,6 +7,11 @@ using Newtonsoft.Json;
 
 namespace Block
 {
+    //* INPUT : String uri - GET topStories HackerNews API route*//
+    //* OUTPUT : Queue<string>, Queue of ids*//
+
+    //* This block fetches all the top stories from the API Hacker News *//
+    // *through the route /v0/topstories and return the payload in the form of a Queue<string> *//
     class GetTopStoriesBlock
     {
         public GetTopStoriesBlock()
@@ -22,10 +27,10 @@ namespace Block
 
         private async Task<Queue<string>> Run(string uri)
         {
-            Console.WriteLine("Downloading '{0}'...", uri);
             string payload = await new HttpClient().GetStringAsync(uri);
             IEnumerable<string> topIds = JsonConvert.DeserializeObject<IEnumerable<string>>(payload);
-            System.Console.WriteLine("Finished loading the top stories");
+
+            System.Console.WriteLine("Finished loading the top stories from '{0}'", uri);
 
             return new Queue<string>(topIds);
         }

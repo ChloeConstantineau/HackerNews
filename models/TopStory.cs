@@ -5,10 +5,11 @@ namespace Models
 {
     class TopStory
     {
-        public TopStory(string title, ConcurrentDictionary<string, int> comments)
+        public TopStory(string title, ConcurrentDictionary<string, int> comments, List<KeyValuePair<string, int>> topComments = null)
         {
             this.Title = title;
             this.Comments = comments;
+            this.TopComments = null;
         }
 
         public string Title { get; set; }

@@ -6,6 +6,12 @@ using Models;
 
 namespace Block
 {
+    //* INPUT : Object TopStory without TopComments property                             *//
+    //* OUTPUT : Object TopStory with Top Comments property, throught th block's buffer  *//
+
+    //* This block takes all the comments from a story and computes the top commentors (Default 10) *//
+    //* The block sends a response as soon as the topCommentors for a story have been computed      *//
+
     class ComputeTopCommentsPerStoryBlock
     {
         public ComputeTopCommentsPerStoryBlock()
@@ -22,9 +28,8 @@ namespace Block
         {
             var topComments = (topStory.Comments.Count >= Constants.NBOFCOMMENTATORS) ? getTopCommentators(topStory.Comments) : new List<KeyValuePair<string, int>>(topStory.Comments.ToArray());
             topStory.TopComments = topComments;
-            System.Console.WriteLine("Posting story: " + topStory.Title);
+            System.Console.WriteLine("Finished processing story : '{0}'", topStory.Title);
             this.bufferBlock.Post(topStory);
-
         }
 
         List<KeyValuePair<string, int>> getTopCommentators(ConcurrentDictionary<string, int> comments)
@@ -32,11 +37,10 @@ namespace Block
             List<KeyValuePair<string, int>> topComments = new List<KeyValuePair<string, int>>(comments.ToArray());
             List<KeyValuePair<string, int>> SortedTopComments = topComments.OrderByDescending(c => c.Value).ToList();
 
-            return SortedTopComments.GetRange(0, 9);
+            return SortedTopComments.GetRange(0, Constants.NBOFCOMMENTATORS);
         }
 
         public ActionBlock<TopStory> block { get; set; }
         public BufferBlock<TopStory> bufferBlock { get; set; }
-
     }
 }

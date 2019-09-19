@@ -9,6 +9,14 @@ using Newtonsoft.Json;
 
 namespace Block
 {
+    //* INPUT : Object Item of Type story*//
+    //* OUTPUT : Object TopStory outputed throught the block's buffer*//
+
+    //* This block takes one top story at a time and traverses the comments posted on such story *//
+    //* While doing so, it collects                     *//
+    //* 1) The comment count per user for that story    *//
+    //* 2) The comment count per user for all stories   *//
+
     class TraverseTopStoriesCommentsBlock
     {
         public TraverseTopStoriesCommentsBlock()
@@ -25,44 +33,36 @@ namespace Block
 
         private async Task Run(Item item)
         {
-            if (item.Kids != null)
-            {
-                var storyComment = await traverseCommentTree(item.Kids);
-                var topStory = new TopStory(item.Title, storyComment);
-
-                this.bufferBlock.Post(topStory);
-            }
-            else
-            {
-                var topStory = new TopStory(item.Title, new ConcurrentDictionary<string, int>());
-                this.bufferBlock.Post(topStory);
-            }
+            var storyComment = (item.Kids != null) ? await traverseCommentTree(item.Kids) : new ConcurrentDictionary<string, int>();
+            var topStory = new TopStory(item.Title, storyComment);
+            this.bufferBlock.Post(topStory);
         }
 
-        async Task<ConcurrentDictionary<string, int>> traverseCommentTree(List<int> kids)
+        private async Task<ConcurrentDictionary<string, int>> traverseCommentTree(List<int> kids)
         {
-            ConcurrentQueue<int> kidsToVisit = new ConcurrentQueue<int>(kids);
-            ConcurrentDictionary<string, int> storyComments = new ConcurrentDictionary<string, int>();
+            ConcurrentQueue<int> kidsToVisit = new ConcurrentQueue<int>(kids); //ConcurrentQueue for comments that still need to be fetched from the API
+            ConcurrentDictionary<string, int> storyComments = new ConcurrentDictionary<string, int>(); //Almanach of the count of comments per user posted for all the stories. Ordered by user id.
 
             var tasks = new List<Task>();
-            var processCount = Environment.ProcessorCount; //Number of threads equals number of core
+            var processCount = Environment.ProcessorCount; //Number of threads is equal to the number of core of the machine
 
-            for (int n = 0; n < processCount; n++)
+            for (int n = 0; n < processCount; n++) // Start processCount number of threads to traverse the comment tree
             {
                 HttpClient apiCaller = new HttpClient();
+
                 tasks.Add(Task.Run(async () =>
                 {
                     while (kidsToVisit.Count != 0)
                     {
-                        kidsToVisit.TryDequeue(out int currentKidId);
-                        string url = "https://hacker-news.firebaseio.com/v0/item/" + currentKidId.ToString() + ".json";
-                        string payload = await apiCaller.GetStringAsync(url);
-                        Item item = JsonConvert.DeserializeObject<Item>(payload);
+                        kidsToVisit.TryDequeue(out int currentKidId); // Breath first search (BFS) tree traversal with Queue
+                        Item item = await getItemApi(currentKidId, apiCaller);
+
                         if (item != null && !item.Dead && !item.Deleted && item.By != null)
                         {
-                            storyComments.AddOrUpdate(item.By, 1, (key, oldValue) => oldValue + 1);
-                            this.commentsRegistry.AddOrUpdate(item.By, 1, (key, oldValue) => oldValue + 1);
-                            if (item != null && item.Kids != null && !item.Dead && !item.Deleted)
+                            storyComments.AddOrUpdate(item.By, 1, (key, oldValue) => oldValue + 1); // The comment count per user for that story
+                            this.commentsRegistry.AddOrUpdate(item.By, 1, (key, oldValue) => oldValue + 1); // The comment count per user for all stories
+
+                            if (item.Kids != null)
                             {
                                 foreach (var kidId in item.Kids)
                                 {
@@ -76,6 +76,15 @@ namespace Block
             await Task.WhenAll(tasks);
 
             return storyComments;
+        }
+
+        // Utils function to call the HackerNews api route GET Item
+        private async Task<Item> getItemApi(int id, HttpClient httpClient)
+        {
+            string url = "https://hacker-news.firebaseio.com/v0/item/" + id.ToString() + ".json";
+            string payload = await httpClient.GetStringAsync(url);
+            Item item = JsonConvert.DeserializeObject<Item>(payload);
+            return item;
         }
 
         public ActionBlock<Item> block { get; set; }
