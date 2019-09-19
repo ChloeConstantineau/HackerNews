@@ -55,16 +55,16 @@ namespace HackerNews
             computeTopCommentsPerStory.bufferBlock.Complete(); //End of the pipeline
 
             commentsRegistry = traverseTopStoriesComments.commentsRegistry;
-            printResults(this.topStories);
+            printResults();
         }
 
-        void printResults(List<TopStory> results)
+        void printResults()
         {
-            foreach (var result in results)
+            foreach (var topStory in topStories)
             {
-                System.Console.Write(result.Title);
+                System.Console.Write(topStory.Title);
 
-                foreach (var topComment in result.TopComments)
+                foreach (var topComment in topStory.TopComments)
                 {
                     System.Console.Write(" | {0} ( {1} for story - {2} total)", topComment.Key, topComment.Value, commentsRegistry[topComment.Key]);
                 }
@@ -72,7 +72,6 @@ namespace HackerNews
                 System.Console.WriteLine();
             }
         }
-
         string uri { get; set; }
         DataflowLinkOptions linkOptions { get; set; }
         List<TopStory> topStories { get; set; }
