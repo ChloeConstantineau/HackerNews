@@ -765,11 +765,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/dev/HackerNews/HackerNews.csproj",
+      "projectUniqueName": "/home/dev/HackerNews/HackerNews/HackerNews.csproj",
       "projectName": "HackerNews",
-      "projectPath": "/home/dev/HackerNews/HackerNews.csproj",
+      "projectPath": "/home/dev/HackerNews/HackerNews/HackerNews.csproj",
       "packagesPath": "/home/dev/.nuget/packages/",
-      "outputPath": "/home/dev/HackerNews/obj/",
+      "outputPath": "/home/dev/HackerNews/HackerNews/obj/",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "/usr/share/dotnet/sdk/NuGetFallbackFolder"

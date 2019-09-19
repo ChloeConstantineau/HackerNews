@@ -23,7 +23,6 @@ namespace Block
 
             });
         }
-        public TransformBlock<string, Queue<string>> block { get; set; }
 
         private async Task<Queue<string>> Run(string uri)
         {
@@ -34,5 +33,7 @@ namespace Block
 
             return new Queue<string>(topIds);
         }
+        public TransformBlock<string, Queue<string>> block { get; set; }
+
     }
 }
