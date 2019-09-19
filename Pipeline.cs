@@ -40,11 +40,10 @@ namespace HackerNews
 
             Task.WaitAll(receiveAllStories);
             computeTopCommentsPerStory.bufferBlock.Complete();
-            this.commentsRegistry = traverseTopStoriesComments.commentsRegistry;
-            printResults(this.topStories);
+            printResults(this.topStories, traverseTopStoriesComments.commentsRegistry);
         }
 
-        void printResults(List<TopStory> results)
+        void printResults(List<TopStory> results, ConcurrentDictionary<string, int> commentsRegistry)
         {
             foreach (var result in results)
             {
@@ -58,7 +57,6 @@ namespace HackerNews
             }
 
         }
-
         string uri { get; set; }
         DataflowLinkOptions linkOptions { get; set; }
         List<TopStory> topStories { get; set; }
