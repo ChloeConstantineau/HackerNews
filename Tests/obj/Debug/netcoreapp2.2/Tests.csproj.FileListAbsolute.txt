@@ -1,0 +1,14 @@
+/home/dev/HackerNews/Tests/bin/Debug/netcoreapp2.2/Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
+/home/dev/HackerNews/Tests/bin/Debug/netcoreapp2.2/Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
+/home/dev/HackerNews/Tests/bin/Debug/netcoreapp2.2/Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+/home/dev/HackerNews/Tests/bin/Debug/netcoreapp2.2/Tests.deps.json
+/home/dev/HackerNews/Tests/bin/Debug/netcoreapp2.2/Tests.runtimeconfig.json
+/home/dev/HackerNews/Tests/bin/Debug/netcoreapp2.2/Tests.runtimeconfig.dev.json
+/home/dev/HackerNews/Tests/bin/Debug/netcoreapp2.2/Tests.dll
+/home/dev/HackerNews/Tests/bin/Debug/netcoreapp2.2/Tests.pdb
+/home/dev/HackerNews/Tests/obj/Debug/netcoreapp2.2/Tests.csprojAssemblyReference.cache
+/home/dev/HackerNews/Tests/obj/Debug/netcoreapp2.2/Tests.csproj.CoreCompileInputs.cache
+/home/dev/HackerNews/Tests/obj/Debug/netcoreapp2.2/Tests.AssemblyInfoInputs.cache
+/home/dev/HackerNews/Tests/obj/Debug/netcoreapp2.2/Tests.AssemblyInfo.cs
+/home/dev/HackerNews/Tests/obj/Debug/netcoreapp2.2/Tests.dll
+/home/dev/HackerNews/Tests/obj/Debug/netcoreapp2.2/Tests.pdb
