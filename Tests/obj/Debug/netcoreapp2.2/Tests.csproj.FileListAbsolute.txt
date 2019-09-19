@@ -12,3 +12,9 @@
 /home/dev/HackerNews/Tests/obj/Debug/netcoreapp2.2/Tests.AssemblyInfo.cs
 /home/dev/HackerNews/Tests/obj/Debug/netcoreapp2.2/Tests.dll
 /home/dev/HackerNews/Tests/obj/Debug/netcoreapp2.2/Tests.pdb
+/home/chloe/Desktop/HackerNews/Tests/obj/Debug/netcoreapp2.2/Tests.csprojAssemblyReference.cache
+/home/chloe/Desktop/HackerNews/Tests/obj/Debug/netcoreapp2.2/Tests.csproj.CoreCompileInputs.cache
+/home/chloe/Desktop/HackerNews/Tests/obj/Debug/netcoreapp2.2/Tests.AssemblyInfoInputs.cache
+/home/chloe/Desktop/HackerNews/Tests/obj/Debug/netcoreapp2.2/Tests.AssemblyInfo.cs
+/home/chloe/Desktop/HackerNews/Tests/obj/Debug/netcoreapp2.2/Tests.dll
+/home/chloe/Desktop/HackerNews/Tests/obj/Debug/netcoreapp2.2/Tests.pdb
