@@ -12,7 +12,7 @@ namespace Block
 
     //* This block fetches all the top stories from the API Hacker News *//
     // *through the route /v0/topstories and return the payload in the form of a Queue<string> *//
-    class GetTopStoriesBlock
+    public class GetTopStoriesBlock
     {
         public GetTopStoriesBlock()
         {
@@ -23,7 +23,6 @@ namespace Block
 
             });
         }
-
         private async Task<Queue<string>> Run(string uri)
         {
             string payload = await new HttpClient().GetStringAsync(uri);

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Models
 {
-    class TopStory
+    public class TopStory
     {
         public TopStory(string title, ConcurrentDictionary<string, int> comments, List<KeyValuePair<string, int>> topComments = null)
         {

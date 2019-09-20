@@ -14,7 +14,7 @@ namespace Block
     //* This block takes all the ids returned from the API and filters the items based on their type  *//
     //* The call send ids of stories and jobs. Since jobs have no comments they must be filtered out. *//
     //* As soon as an id has been identified as type 'story' it is sent to the next block             *//
-    class FilterTopStoriesBlock
+    public class FilterTopStoriesBlock
     {
         public FilterTopStoriesBlock()
         {
@@ -53,8 +53,7 @@ namespace Block
             return item;
         }
 
-        public ActionBlock<Queue<string>> block { get; set; }
         public BufferBlock<Item> bufferBlock { get; set; }
-
+        public ActionBlock<Queue<string>> block { get; set; }
     }
 }

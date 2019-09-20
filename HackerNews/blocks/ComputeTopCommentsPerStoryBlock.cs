@@ -12,7 +12,7 @@ namespace Block
     //* This block takes all the comments from a story and computes the top commentors (Default 10) *//
     //* The block sends a response as soon as the topCommentors for a story have been computed      *//
 
-    class ComputeTopCommentsPerStoryBlock
+    public class ComputeTopCommentsPerStoryBlock
     {
         public ComputeTopCommentsPerStoryBlock()
         {

@@ -4,7 +4,7 @@ using System;
 namespace Models
 {
     //* Api model of the ITEM object *//
-    class Item
+    public class Item
     {
         public string By { get; set; }
         public int Descendants { get; set; }

@@ -24,7 +24,7 @@ namespace HackerNews
             this.topStories = new List<TopStory>();
             this.commentsRegistry = new ConcurrentDictionary<string, int>();
         }
-
+        
         public void Run(string uri)
         {
             // Declaration of all the pipeline blocks

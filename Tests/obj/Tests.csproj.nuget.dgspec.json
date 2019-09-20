@@ -4,6 +4,64 @@
     "/home/chloe/Desktop/HackerNews/Tests/Tests.csproj": {}
   },
   "projects": {
+    "/home/chloe/Desktop/HackerNews/HackerNews/HackerNews.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/chloe/Desktop/HackerNews/HackerNews/HackerNews.csproj",
+        "projectName": "HackerNews",
+        "projectPath": "/home/chloe/Desktop/HackerNews/HackerNews/HackerNews.csproj",
+        "packagesPath": "/home/chloe/.nuget/packages/",
+        "outputPath": "/home/chloe/Desktop/HackerNews/HackerNews/obj/",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "/usr/share/dotnet/sdk/NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "/home/chloe/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp2.2"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp2.2": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp2.2": {
+          "dependencies": {
+            "Microsoft.NETCore.App": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.2.0, )",
+              "autoReferenced": true
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[12.0.2, )"
+            },
+            "System.Threading.Tasks.Dataflow": {
+              "target": "Package",
+              "version": "[4.9.0, )"
+            }
+          },
+          "imports": [
+            "net461"
+          ],
+          "assetTargetFallback": true,
+          "warn": true
+        }
+      }
+    },
     "/home/chloe/Desktop/HackerNews/Tests/Tests.csproj": {
       "version": "1.0.0",
       "restore": {
@@ -27,7 +85,11 @@
         },
         "frameworks": {
           "netcoreapp2.2": {
-            "projectReferences": {}
+            "projectReferences": {
+              "/home/chloe/Desktop/HackerNews/HackerNews/HackerNews.csproj": {
+                "projectPath": "/home/chloe/Desktop/HackerNews/HackerNews/HackerNews.csproj"
+              }
+            }
           }
         },
         "warningProperties": {

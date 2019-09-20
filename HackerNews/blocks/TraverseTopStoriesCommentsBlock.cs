@@ -16,8 +16,7 @@ namespace Block
     //* While doing so, it collects                     *//
     //* 1) The comment count per user for that story    *//
     //* 2) The comment count per user for all stories   *//
-
-    class TraverseTopStoriesCommentsBlock
+    public class TraverseTopStoriesCommentsBlock
     {
         public TraverseTopStoriesCommentsBlock()
         {
@@ -27,7 +26,6 @@ namespace Block
             this.block = new ActionBlock<Item>(async item =>
             {
                 await Run(item);
-
             });
         }
 
