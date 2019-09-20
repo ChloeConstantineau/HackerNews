@@ -19,21 +19,15 @@ The total number of comments they made among all the top 30 stories.
 For instance, if we consider just the 3 top stories (instead of 30) and top 2 commenters (instead of 10):
 
 | Story A | Story B | Story C |
-
 |--------------------|---------------------|---------------------|
-
 | user-a (1 comment) | user-a (4 comments) | user-a (4 comments) |
-
 | user-b (2 comment) | user-b (3 comments) | user-b (5 comments) |
-
 | user-c (3 comment) | user-c (2 comments) | user-c (3 comments) |
 
 We want the output to look as follows:
 
 | Story | 1st Top Commenter | 2nd Top Commenter |
-
 |---------|---------------------------------|---------------------------------|
-
 | Story A | user-c (3 for story - 8 total) | user-b (2 for story - 10 total) |
 
 # Run the solution locally
@@ -51,3 +45,9 @@ Or Do both commands manually
 2. `cd HackerNews`
 3. `dotnet build`
 4. `dotnet run`
+
+# Run the tests
+
+1. `cd Tests`
+2. `dotnet build`
+2. `dotnet test`
