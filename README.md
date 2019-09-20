@@ -6,15 +6,15 @@ Dowload th top the stories from the Hacker News API: https://github.com/HackerNe
 
 For each of the top 30 stories, we want to have an output containing:
 
-The story title
+- The story title
 
-The top 10 commenters of that story.
+- The top 10 commenters of that story.
 
 For each commenter:
 
-The number of comments they made on the story.
+- The number of comments they made on the story.
 
-The total number of comments they made among all the top 30 stories.
+- The total number of comments they made among all the top 30 stories.
 
 For instance, if we consider just the 3 top stories (instead of 30) and top 2 commenters (instead of 10):
 
