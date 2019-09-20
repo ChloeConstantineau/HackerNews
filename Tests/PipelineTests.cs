@@ -92,7 +92,7 @@ namespace Tests
             var topStoryWithTopComments = traverseTopStoriesComments.bufferBlock.ReceiveAsync().Result;
 
             Assert.IsNotNull(topStoryWithTopComments.TopComments);
-            Assert.AreEqual(topStoryWithTopComments.TopComments.Count, Constants.NBOFCOMMENTATORS);
+            Assert.AreEqual(topStoryWithTopComments.TopComments.Count, Constants.NBOFCOMMENTERS);
         }
     }
 }

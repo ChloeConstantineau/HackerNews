@@ -26,7 +26,7 @@ namespace Block
         }
         private void Run(TopStory topStory)
         {
-            var topComments = (topStory.Comments.Count >= Constants.NBOFCOMMENTATORS) ? getTopCommentators(topStory.Comments) : new List<KeyValuePair<string, int>>(topStory.Comments.ToArray());
+            var topComments = (topStory.Comments.Count >= Constants.NBOFCOMMENTERS) ? getTopCommentators(topStory.Comments) : new List<KeyValuePair<string, int>>(topStory.Comments.ToArray());
             topStory.TopComments = topComments;
             System.Console.WriteLine("Finished processing story : '{0}'", topStory.Title);
             this.bufferBlock.Post(topStory);
@@ -37,7 +37,7 @@ namespace Block
             List<KeyValuePair<string, int>> topComments = new List<KeyValuePair<string, int>>(comments.ToArray());
             List<KeyValuePair<string, int>> SortedTopComments = topComments.OrderByDescending(c => c.Value).ToList();
 
-            return SortedTopComments.GetRange(0, Constants.NBOFCOMMENTATORS);
+            return SortedTopComments.GetRange(0, Constants.NBOFCOMMENTERS);
         }
 
         public ActionBlock<TopStory> block { get; set; }

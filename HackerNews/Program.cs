@@ -4,7 +4,7 @@ using System.Threading.Tasks.Dataflow;
 public static class Constants
 {
     public const int NBSTORIES = 30;
-    public const int NBOFCOMMENTATORS = 10;
+    public const int NBOFCOMMENTERS = 10;
 }
 
 namespace HackerNews
@@ -16,7 +16,6 @@ namespace HackerNews
             try
             {
                 var watch = System.Diagnostics.Stopwatch.StartNew();
-
 
                 var linkOptions = new DataflowLinkOptions { PropagateCompletion = true };
                 string uri = "https://hacker-news.firebaseio.com/v0/topstories.json";
