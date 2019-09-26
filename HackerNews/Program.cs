@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Threading.Tasks.Dataflow;
 
 public static class Constants
@@ -13,6 +14,10 @@ namespace HackerNews
     {
         static void Main(string[] args)
         {
+            // Changed these default values for better performance time
+            ServicePointManager.DefaultConnectionLimit = 100;
+            ServicePointManager.MaxServicePointIdleTime = 9000;
+
             try
             {
                 var watch = System.Diagnostics.Stopwatch.StartNew();

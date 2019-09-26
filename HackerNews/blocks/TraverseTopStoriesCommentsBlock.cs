@@ -42,7 +42,7 @@ namespace Block
             ConcurrentDictionary<string, int> storyComments = new ConcurrentDictionary<string, int>(); //Almanach of the count of comments per user posted for all the stories. Ordered by user id.
 
             var tasks = new List<Task>();
-            var processCount = Environment.ProcessorCount; //Number of threads is equal to the number of core of the machine
+            var processCount = 15; // Arbitrary value, optimized after tests
 
             for (int n = 0; n < processCount; n++) // Start processCount number of threads to traverse the comment tree
             {
