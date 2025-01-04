@@ -2,9 +2,9 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks.Dataflow;
-using Models;
+using HackerNews.models;
 
-namespace Block
+namespace HackerNews.blocks
 {
     //* INPUT : Object TopStory without TopComments property                             *//
     //* OUTPUT : Object TopStory with Top Comments property, throught th block's buffer  *//
@@ -16,31 +16,27 @@ namespace Block
     {
         public ComputeTopCommentsPerStoryBlock()
         {
-            this.bufferBlock = new BufferBlock<TopStory>();
+            BufferBlock = new BufferBlock<TopStory>();
 
-            this.block = new ActionBlock<TopStory>(topStory =>
-            {
-                Run(topStory);
-
-            });
+            Block = new ActionBlock<TopStory>(Run);
         }
         private void Run(TopStory topStory)
         {
-            var topComments = (topStory.Comments.Count >= Constants.NBOFCOMMENTERS) ? getTopCommentators(topStory.Comments) : new List<KeyValuePair<string, int>>(topStory.Comments.ToArray());
+            var topComments = topStory.Comments.Count >= Constants.NBOFCOMMENTERS ? GetTopCommentators(topStory.Comments) : new List<KeyValuePair<string, int>>(topStory.Comments.ToArray());
             topStory.TopComments = topComments;
             System.Console.WriteLine("Finished processing story : '{0}'", topStory.Title);
-            this.bufferBlock.Post(topStory);
+            BufferBlock.Post(topStory);
         }
 
-        List<KeyValuePair<string, int>> getTopCommentators(ConcurrentDictionary<string, int> comments)
+        List<KeyValuePair<string, int>> GetTopCommentators(ConcurrentDictionary<string, int> comments)
         {
-            List<KeyValuePair<string, int>> topComments = new List<KeyValuePair<string, int>>(comments.ToArray());
-            List<KeyValuePair<string, int>> SortedTopComments = topComments.OrderByDescending(c => c.Value).ToList();
+            List<KeyValuePair<string, int>> topComments = [.. comments.ToArray()];
+            List<KeyValuePair<string, int>> SortedTopComments = [.. topComments.OrderByDescending(c => c.Value)];
 
             return SortedTopComments.GetRange(0, Constants.NBOFCOMMENTERS);
         }
 
-        public ActionBlock<TopStory> block { get; set; }
-        public BufferBlock<TopStory> bufferBlock { get; set; }
+        public ActionBlock<TopStory> Block { get; set; }
+        public BufferBlock<TopStory> BufferBlock { get; set; }
     }
 }

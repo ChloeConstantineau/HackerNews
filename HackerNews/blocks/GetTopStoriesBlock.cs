@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Newtonsoft.Json;
 
-namespace Block
+namespace HackerNews.blocks
 {
     //* INPUT : String uri - GET topStories HackerNews API route*//
     //* OUTPUT : Queue<string>, Queue of ids*//
@@ -16,7 +16,7 @@ namespace Block
     {
         public GetTopStoriesBlock()
         {
-            this.block = new TransformBlock<string, Queue<string>>(async uri =>
+            Block = new TransformBlock<string, Queue<string>>(async uri =>
             {
                 Queue<string> result = await Run(uri);
                 return result;
@@ -28,11 +28,11 @@ namespace Block
             string payload = await new HttpClient().GetStringAsync(uri);
             IEnumerable<string> topIds = JsonConvert.DeserializeObject<IEnumerable<string>>(payload);
 
-            System.Console.WriteLine("Finished loading the top stories from '{0}'", uri);
+            Console.WriteLine("Finished loading the top stories from '{0}'", uri);
 
             return new Queue<string>(topIds);
         }
-        public TransformBlock<string, Queue<string>> block { get; set; }
+        public TransformBlock<string, Queue<string>> Block { get; set; }
 
     }
 }

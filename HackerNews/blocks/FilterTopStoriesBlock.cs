@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
-using Models;
+using HackerNews.models;
 using Newtonsoft.Json;
 
-namespace Block
+namespace HackerNews.blocks
 {
     //* INPUT : Queue<string>, top story item ids                                 *//
     //* OUTPUT : Object Item of type 'story' outputed throught the block's buffer *//
@@ -18,17 +18,14 @@ namespace Block
     {
         public FilterTopStoriesBlock()
         {
-            this.bufferBlock = new BufferBlock<Item>();
+            BufferBlock = new BufferBlock<Item>();
 
-            this.block = new ActionBlock<Queue<string>>(async itemIds =>
-            {
-                await Run(itemIds);
-            });
+            Block = new ActionBlock<Queue<string>>(Run);
         }
         private async Task Run(Queue<string> itemIds)
         {
             int topStoryCounter = 0;
-            HttpClient apiClient = new HttpClient();
+            HttpClient apiClient = new();
 
             while (topStoryCounter <= Constants.NBSTORIES && itemIds.TryDequeue(out string id))
             {
@@ -37,7 +34,7 @@ namespace Block
                 if (currentItem.Type == "story" && !currentItem.Dead && !currentItem.Deleted)
                 {
                     topStoryCounter++;
-                    this.bufferBlock.Post(currentItem); //Posting result to the next block as it is computed
+                    BufferBlock.Post(currentItem); //Posting result to the next block as it is computed
                 }
             }
 
@@ -53,7 +50,7 @@ namespace Block
             return item;
         }
 
-        public BufferBlock<Item> bufferBlock { get; set; }
-        public ActionBlock<Queue<string>> block { get; set; }
+        public BufferBlock<Item> BufferBlock { get; set; }
+        public ActionBlock<Queue<string>> Block { get; set; }
     }
 }

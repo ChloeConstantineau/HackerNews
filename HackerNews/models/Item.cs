@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using System;
 
-namespace Models
+namespace HackerNews.models
 {
     //* Api model of the ITEM object *//
     public class Item
