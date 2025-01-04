@@ -1,8 +1,16 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS build-env
+# Build and Publish
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+ARG TARGETARCH
+WORKDIR /source
 
-COPY ./HackerNews /app
+COPY --link HackerNews/*.csproj .
+RUN dotnet restore -a $TARGETARCH
+
+COPY --link HackerNews/. .
+RUN dotnet publish -a $TARGETARCH --no-restore -o /app
+
+# Run
+FROM mcr.microsoft.com/dotnet/runtime:9.0 AS final
 WORKDIR /app
-
-RUN ["dotnet", "build"]
-
-ENTRYPOINT ["dotnet", "run"]
+COPY --link --from=build /app .
+ENTRYPOINT ["dotnet", "HackerNews.dll"]
