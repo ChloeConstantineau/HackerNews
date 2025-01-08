@@ -3,22 +3,5 @@ using System.Collections.Generic;
 namespace HackerNews.models
 {
     //* Api model of the ITEM object *//
-    public class Item
-    {
-        public string By { get; set; }
-        public int Descendants { get; set; }
-        public int Id { get; set; }
-        public bool Deleted { get; set; }
-        public List<int> Kids { get; set; }
-        public int Score { get; set; }
-        public int Time { get; set; }
-        public string Title { get; set; }
-        public string Type { get; set; }
-        public string Url { get; set; }
-        public string Text { get; set; }
-        public bool Dead { get; set; }
-        public int Parent { get; set; }
-        public int Poll { get; set; }
-        public List<int> Parts { get; set; }
-    }
+    public record class Item(int Id, string? By = null, int? Descendants = null, bool? Deleted = null, List<int>? Kids = null, int? Score = null, int? Time = null, string? Title = null, string? Type = null, string? Url = null, string? Text = null, bool? Dead = null, int? Parent = null, int? Poll = null, List<int>? Parts = null);
 }

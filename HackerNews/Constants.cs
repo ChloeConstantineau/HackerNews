@@ -2,7 +2,7 @@ namespace HackerNews
 {
     public static class Constants
     {
-        public const int NBSTORIES = 5;
-        public const int NBOFCOMMENTERS = 1;
+        public const int NB_TOP_STORIES = 5;
+        public const int NB_TOP_COMMENTERS = 2;
     }
 }
