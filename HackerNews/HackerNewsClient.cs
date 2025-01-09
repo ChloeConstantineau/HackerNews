@@ -5,17 +5,13 @@ using Newtonsoft.Json;
 
 namespace HackerNews
 {
-    public class HackerNewsClient
+
+    public class HackerNewsClient(HttpClient client)
     {
         public async Task<T?> GetFromJSON<T>(string uri)
         {
             var result = await client.GetStringAsync(uri);
             return JsonConvert.DeserializeObject<T>(result);
         }
-
-        private readonly HttpClient client = new()
-        {
-            BaseAddress = new Uri("https://hacker-news.firebaseio.com"),
-        };
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks.Dataflow;
 using HackerNews.blocks;
 
@@ -16,7 +17,7 @@ namespace HackerNews
     {
         static public void Run()
         {
-            var sharedClient = new HackerNewsClient();
+            var sharedClient = new HackerNewsClient(new() { BaseAddress = new Uri("https://hacker-news.firebaseio.com") });
             var linkOptions = new DataflowLinkOptions { PropagateCompletion = true };
 
             GetTopStories getTopStories = new(sharedClient);
