@@ -2,7 +2,7 @@
 
 This repo contains a solution for the following problem:
 
-Dowload th top the stories from the Hacker News API: https://github.com/HackerNews/API
+Download the top the stories from the Hacker News API: https://github.com/HackerNews/API
 
 For each of the top 30 stories, we want to have an output containing:
 
@@ -34,10 +34,6 @@ We want the output to look as follows:
 ## With Docker
 
 You can run the `run.sh` script.
-
-Or Do both commands manually
-1. `docker build -t automat/hackernews .`
-2. `docker run automat/hackernews`
 
 ## On your machine
 
