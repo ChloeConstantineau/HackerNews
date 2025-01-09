@@ -1,9 +1,9 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Threading.Tasks.Dataflow;
-using System.Collections.Generic;
-using System.Collections.Concurrent;
 using HackerNews.blocks;
 using HackerNews.models;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Threading.Tasks.Dataflow;
 
 namespace Tests
 {

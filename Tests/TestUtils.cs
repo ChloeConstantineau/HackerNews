@@ -1,9 +1,9 @@
-using System;
-using System.Collections.Generic;
 using HackerNews;
 using HackerNews.models;
 using Newtonsoft.Json;
 using RichardSzalay.MockHttp;
+using System;
+using System.Collections.Generic;
 
 namespace Tests
 {

@@ -1,6 +1,6 @@
+using HackerNews.blocks;
 using System;
 using System.Threading.Tasks.Dataflow;
-using HackerNews.blocks;
 
 namespace HackerNews
 {

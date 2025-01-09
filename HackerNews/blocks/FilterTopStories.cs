@@ -1,6 +1,6 @@
+using HackerNews.models;
 using System.Collections.Concurrent;
 using System.Threading.Tasks.Dataflow;
-using HackerNews.models;
 
 namespace HackerNews.blocks
 {
