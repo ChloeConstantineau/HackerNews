@@ -1,9 +1,9 @@
-name: Build and Test
+name: Format, Build and Test
 
 on: [push, pull_request, workflow_dispatch]
 
 jobs:
-  build:
+  dotnetcore:
 
     runs-on: ubuntu-latest
 
@@ -13,6 +13,9 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '9.0.x'
+    
+    - name: Format
+      run: dotnet format ./Automat.sln --severity warn
 
     - name: Build
       run: dotnet build ./Automat.sln --configuration Release
