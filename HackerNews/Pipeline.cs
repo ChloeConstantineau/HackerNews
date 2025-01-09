@@ -1,11 +1,5 @@
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using HackerNews.blocks;
-using HackerNews.models;
 
 namespace HackerNews
 {
@@ -20,13 +14,9 @@ namespace HackerNews
 
     class Pipeline()
     {
-        public static HttpClient sharedClient = new()
-        {
-            BaseAddress = new Uri("https://hacker-news.firebaseio.com"),
-        };
-
         static public void Run()
         {
+            var sharedClient = new HackerNewsClient();
             var linkOptions = new DataflowLinkOptions { PropagateCompletion = true };
 
             GetTopStories getTopStories = new(sharedClient);

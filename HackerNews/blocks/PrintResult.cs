@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,8 +14,6 @@ namespace HackerNews.blocks
         public ActionBlock<ConcurrentBag<TopStory>> Block = new(topStories =>
         {
             var commentsRegistry = GetCommentsRegistry(topStories);
-
-            Console.WriteLine("Top Story Count: {0}", topStories.Count);
 
             Parallel.ForEach(topStories, topStory =>
             {
@@ -35,21 +32,16 @@ namespace HackerNews.blocks
             });
         });
 
-
-
-        static private Dictionary<string, int> GetCommentsRegistry(ConcurrentBag<TopStory> topStories)
+        static private ConcurrentDictionary<string, int> GetCommentsRegistry(ConcurrentBag<TopStory> topStories)
         {
-            var mergedComments = new Dictionary<string, int>();
-            var storyComments = topStories.Select(s => s.Comments);
+            var mergedComments = new ConcurrentDictionary<string, int>();
+            var itComments = topStories.Select(s => s.Comments);
 
-            foreach (var comments in storyComments)
+            foreach (var comments in itComments)
             {
                 foreach (var kvp in comments)
                 {
-                    if (!mergedComments.ContainsKey(kvp.Key))
-                    {
-                        mergedComments[kvp.Key] = kvp.Value;
-                    }
+                    mergedComments.AddOrUpdate(kvp.Key, kvp.Value, (_, value) => kvp.Value + value);
                 }
             }
             return mergedComments;
