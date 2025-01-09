@@ -4,15 +4,6 @@ using System.Threading.Tasks.Dataflow;
 
 namespace HackerNews
 {
-    //* INPUT: string HackerNews uri , DataflowLinkOptions*//
-    //* OUTPUT: Story Title, top commentors (comment count, total comment count) for X number of Top Stories *//
-
-    //* This is the heart of the program *//
-    //* A pipeline created of DataFlow block each connected to one another. *//
-    //* The pipeline starts as soon as the GetTopStoriesBlock is triggered *//
-    //* Depending on the block, it can either wait for all the data to arrive, compute and send a result, *//
-    //  or it can send a result for each input receive immediately after it's computation is done. *//
-
     class Pipeline()
     {
         static public void Run()
